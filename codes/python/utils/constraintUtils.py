@@ -178,40 +178,53 @@ def kron_sum(a,b):
 	return (a.reshape(-1, 1) + b.reshape(1, -1)).flatten()
 
 @njit
-def generate_sparse_one_val(dtype = numba.uint32):
-	indices = np.arange(0,NCOLS*NROWS*NVALS,)
-	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS)
-	data = np.ones((NCOLS*NROWS*NVALS), dtype = dtype)
+def generate_sparse_one_val():
+	indices = np.arange(0,NCOLS*NROWS*NVALS, dtype = numba.u2)
+	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS, dtype = numba.u2)
+	data = np.ones((NCOLS*NROWS*NVALS), dtype = numba.b1)
 	return data, indices, indptr
 
 @njit
-def generate_sparse_row(dtype = numba.uint32):
-	indices = kron_sum(np.arange(0,9**3, 9**2), kron_sum(np.arange(0,9,1), np.arange(0,81,9)))   
-	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS)
-	data = np.ones((NCOLS*NROWS*NVALS), dtype = dtype)
+def generate_sparse_row():
+	indices = kron_sum(np.arange(0,9**3, 9**2, dtype = numba.u2),
+					   kron_sum(np.arange(0,9,1, dtype = numba.u2),
+								np.arange(0,81,9, dtype = numba.u2)
+							   )
+					  )   
+	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS, dtype = numba.u2)
+	data = np.ones((NCOLS*NROWS*NVALS), dtype = numba.b1)
 	return data, indices, indptr
 
 @njit
-def generate_sparse_col(dtype = numba.uint32):
-	indices = kron_sum(np.arange(0,81,1), np.arange(0,9**3, 9**2))
-	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS)
-	data = np.ones((NCOLS*NROWS*NVALS), dtype = dtype)
+def generate_sparse_col():
+	indices = kron_sum(np.arange(0,81,1, dtype = numba.u2), np.arange(0,9**3, 9**2, dtype = numba.u2))
+	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS, dtype = numba.u2)
+	data = np.ones((NCOLS*NROWS*NVALS), dtype = numba.b1)
 	return data, indices, indptr
 
 @njit
-def generate_sparse_block(dtype = numba.uint32):
-	indices = kron_sum(np.arange(0,9**3, 9**2*3), kron_sum( np.arange(0, 9*9, 9*3), kron_sum(np.arange(0,9,1), kron_sum(np.arange(0,9**2*3,9**2), np.arange(0,3*9, 9)))))
-	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS)
-	data = np.ones((NCOLS*NROWS*NVALS), dtype = dtype)
+def generate_sparse_block():
+	indices = kron_sum(np.arange(0,9**3, 9**2*3, dtype = numba.u2),
+					   kron_sum( np.arange(0, 9*9, 9*3, dtype = numba.u2),
+								kron_sum(np.arange(0,9,1, dtype = numba.u2),
+										 kron_sum(np.arange(0,9**2*3,9**2, dtype = numba.u2),
+												  np.arange(0,3*9, 9, dtype = numba.u2)
+												 )
+										)
+							   )
+					  )
+	indptr = np.arange(0, (NCOLS*NROWS*NVALS+1), NVALS, dtype = numba.u2)
+	data = np.ones((NCOLS*NROWS*NVALS), dtype = numba.b1)
 	return data, indices, indptr
 
 @njit
-def generate_sparse_clues(clues_inds_rows, clues_inds_cols, clues_vals, dtype = numba.uint32):
-	row_inds = np.arange(clues_vals.shape[0])
+def generate_sparse_clues(clues_inds_rows, clues_inds_cols, clues_vals):
+	row_inds = np.arange(clues_vals.shape[0], dtype = numba.u2)
 	col_inds = NVALS*NCOLS*clues_inds_rows + NVALS*clues_inds_cols + clues_vals-1
+	col_inds = col_inds.astype(numba.u2)
 	indices = col_inds
-	indptr = np.arange(row_inds.shape[0]+1)
-	data = np.ones((len(col_inds)), dtype = dtype)
+	indptr = np.arange(row_inds.shape[0]+1, dtype = numba.u2)
+	data = np.ones((len(col_inds)), dtype = numba.b1)
 	return data, indices, indptr
 
 @njit
@@ -230,11 +243,11 @@ def generate_sparse_constaints(clues_array):
 	
 	return data_list, indices_list, indptr_list, shape_list
 
-@njit
+#@njit
 def concat(arr_list):
 	return [j for arr in arr_list for j in arr]
 
-@njit
+#@njit
 def count_concat(arr_list):
 	offset = 0
 	new_arr_list = arr_list #[None]*len(arr_list)#np.empty((len(arr_list))).tolist()
@@ -243,7 +256,7 @@ def count_concat(arr_list):
 		offset += arr[-1]
 	return concat(new_arr_list)
 
-@njit
+#@njit
 def stack_sparse_matrices(data_list, indices_list, indptr_list, shape_list):
 	data = concat(data_list)
 	indices = concat(indices_list)

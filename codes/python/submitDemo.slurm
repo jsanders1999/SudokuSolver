@@ -9,7 +9,7 @@
 #SBATCH --account=education-EEMCS-MSc-AM
 
 module load .2024rc1
-modula load py-numpy/1.26.1
+module load py-numpy/1.26.1
 module load py-scipy/1.11.3
 module load py-numba/0.57.0
 

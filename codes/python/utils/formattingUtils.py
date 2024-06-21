@@ -1,6 +1,7 @@
 import numpy as np
 import scipy as sp
 from numba import njit
+import numba
 	
 def sudoku_array_to_clues(clue_array):
 	clues_inds_rows, clues_inds_cols = np.where(clue_array>0)
@@ -10,7 +11,9 @@ def sudoku_array_to_clues(clue_array):
 @njit
 def sudoku_array_to_clues_njit(clue_array):
 	clues_inds_rows, clues_inds_cols = np.where(clue_array>0)
-	clues_vals = np.empty_like(clues_inds_rows) 
+	clues_inds_rows = clues_inds_rows.astype(numba.u2)
+	clues_inds_cols = clues_inds_cols.astype(numba.u2)
+	clues_vals = np.empty(clues_inds_rows.shape, dtype = numba.u2) 
 	for i, (row_ind, col_ind) in enumerate(zip(clues_inds_rows, clues_inds_cols)):
 		clues_vals[i] = clue_array[row_ind, col_ind]
 	return clues_inds_rows, clues_inds_cols, clues_vals
