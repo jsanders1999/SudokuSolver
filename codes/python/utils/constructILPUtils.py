@@ -64,7 +64,7 @@ def setup_ILP_njit(clue_array):
 
 @njit
 def kron_sum(a,b):
-	return (a[:,None] + b[None,:]).flatten()
+	return (a.reshape(-1, 1) + b.reshape(1, -1)).flatten()
 
 @njit
 def generate_sparse_one_val(dtype = numba.uint32):
