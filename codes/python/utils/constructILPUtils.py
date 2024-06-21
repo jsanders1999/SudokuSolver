@@ -4,6 +4,12 @@ from numba import njit
 
 from utils.formattingUtils import *
 from utils.constraintUtils import *
+
+from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
+import warnings
+
+warnings.simplefilter('ignore', category=NumbaDeprecationWarning)
+warnings.simplefilter('ignore', category=NumbaPendingDeprecationWarning)
 	
 
 def setup_ILP_sparse(clue_array, format = "csr", dtype = int):
