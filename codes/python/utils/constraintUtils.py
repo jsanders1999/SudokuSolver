@@ -262,6 +262,5 @@ def stack_sparse_matrices(data_list, indices_list, indptr_list, shape_list):
 	indices = concat(indices_list)
 	indptr = count_concat([indptr_list[1]] + [indices[1:] for indices in indptr_list[1:]])
 	shape = (sum( [shape[0] for shape in shape_list])-1, 9**3)
-	print(type(data[0]))
 	return data, indices, indptr, shape
 
