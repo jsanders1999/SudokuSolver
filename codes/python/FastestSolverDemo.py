@@ -1,6 +1,5 @@
 import numpy as np
 import scipy as sp
-import matplotlib.pyplot as plt
 
 from utils.timer import Timer
 
@@ -52,11 +51,22 @@ print(vector_to_array(res.x))
 print()
 
 #print the timings
+print()
 print("CPU times of the different processes:")
 print()
 np.set_printoptions(precision=6)
 keys = np.sort(list(Timer.timers.keys()))
 for key in keys:
-	print(key, "\t\t", np.array(Timer.timers[key]))
+	print("{:<40}\t{}".format(key, np.array(Timer.timers[key])))
+
+print()
+print()
+print("Mean and std of cpu times:")
+print()
+for key in keys:
+	print("{:<40}\tMean: {:0.6f}\t\tStd: {:0.6f}".format(key, np.mean(Timer.timers[key]), np.std(Timer.timers[key])))
+
+
+
 
 

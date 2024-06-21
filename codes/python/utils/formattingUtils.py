@@ -2,7 +2,6 @@ import numpy as np
 import scipy as sp
 from numba import njit
 	
-#you can also just turn the matrix into a sparse one in index format, that might be faster
 def sudoku_array_to_clues(clue_array):
 	clues_inds_rows, clues_inds_cols = np.where(clue_array>0)
 	clues_vals = clue_array[clues_inds_rows, clues_inds_cols]

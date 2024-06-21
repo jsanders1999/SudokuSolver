@@ -2,11 +2,7 @@ import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
 from scipy import optimize as spopt
-
-# import gurobipy as gp
-# from gurobipy import GRB
-# import highspy
-	
+from scipy.optimize import milp
 
 
 def solve_sudoku_scipy(c, A_full):
@@ -14,8 +10,12 @@ def solve_sudoku_scipy(c, A_full):
 	integrality = np.ones(solution_size, dtype = int)
 	bounds = spopt.Bounds(lb=0, ub=1) #somthing with 0 and 
 	constraints = spopt.LinearConstraint(A_full, lb=1, ub=1) #somthing with A
-	res = spopt.milp(c, integrality = integrality, bounds = bounds, constraints = constraints)
+	res = milp(c, integrality = integrality, bounds = bounds, constraints = constraints)
 	return res
+
+# import gurobipy as gp
+# from gurobipy import GRB
+# import highspy
 
 # env = gp.Env(empty=True)
 # env.setParam('OutputFlag', 0)
