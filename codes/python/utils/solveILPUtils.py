@@ -1,6 +1,7 @@
 import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
+from scipy import optimize as spopt
 
 # import gurobipy as gp
 # from gurobipy import GRB
@@ -11,9 +12,9 @@ import matplotlib.pyplot as plt
 def solve_sudoku_scipy(c, A_full):
 	solution_size = A_full.shape[1]
 	integrality = np.ones(solution_size, dtype = int)
-	bounds = sp.optimize.Bounds(lb=0, ub=1) #somthing with 0 and 
-	constraints = sp.optimize.LinearConstraint(A_full, lb=1, ub=1) #somthing with A
-	res = sp.optimize.milp(c, integrality = integrality, bounds = bounds, constraints = constraints)
+	bounds = spopt.Bounds(lb=0, ub=1) #somthing with 0 and 
+	constraints = spopt.LinearConstraint(A_full, lb=1, ub=1) #somthing with A
+	res = spopt.milp(c, integrality = integrality, bounds = bounds, constraints = constraints)
 	return res
 
 # env = gp.Env(empty=True)
