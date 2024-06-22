@@ -25,7 +25,7 @@ The idea is to model the solution of a sudocu as a binary vector of 729 elements
 The constaints of the sudoku can then be modelled as linear constraints. So the constraints "each block/row/column must only have one of each value" can be reduces to linear constraints of the form:
 $A \mathbf{x} = \mathbf{1}$. The same can be done for the constrains that the solution must satisfy the intial clues of the sudoku. We are then left with the ILP:
 
-$$\min_{\mathbf{x} \in \{0,1\}^{729}} \mathbf{c}^T x$$
+$$\min_{\mathbf{x} \in \big{0,1\big}^{729}} \mathbf{c}^T x$$
 
 $$\text{st. } A\mathbf{x} = \mathbf{1}$$
 
