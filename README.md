@@ -10,7 +10,7 @@ Simply navigate to the codes/python folder and run ```fastestSolverDemo.py``` or
 
 You need an evironment with python >3.8, numba, numpy and scipy. 
 
-### Submitting to hpc05
+### Submitting to DelftBlue
 
 ```fastestSolverDemo.py``` can be submitted to DelftBlue by running the command ```sbatch submitDemo.slurm```. 
 The resulting output will be in a file with the name ```slurm-XXXXXXX.out``` where X are numbers.
